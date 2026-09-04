@@ -99,56 +99,38 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
   };
 
   return (
-    /* Outer — covers full screen, centers modal */
-    <div
-      style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '60px 16px 16px' }}
-    >
-      {/* Backdrop */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+      {/* Backdrop overlay */}
       <div
-        style={{ position: 'fixed', inset: 0, background: 'rgba(30,30,40,0.45)' }}
+        className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300"
         onClick={onClose}
       />
 
-      {/* Modal box — never taller than the viewport */}
-      <div
-        style={{
-          position: 'relative',
-          width: '100%',
-          maxWidth: '512px',
-          maxHeight: 'calc(100vh - 76px)',
-          display: 'flex',
-          flexDirection: 'column',
-          background: '#fff',
-          borderRadius: '16px',
-          boxShadow: '0 25px 60px rgba(0,0,0,0.2)',
-          border: '1px solid #f0f0f0',
-        }}
-      >
-        {/* Header — never scrolls away */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', borderBottom: '1px solid #f3f4f6', flexShrink: 0 }}>
-          <h2 style={{ fontSize: '15px', fontWeight: 700, color: '#111827', margin: 0 }}>
+      {/* Modal box */}
+      <div className="relative w-full max-w-lg max-h-[90vh] flex flex-col bg-white dark:bg-slate-900 border border-gray-150 dark:border-slate-800 rounded-2xl shadow-2xl overflow-hidden animate-scale-in z-50">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-slate-800 flex-shrink-0 bg-gray-50/50 dark:bg-slate-900/50">
+          <h2 className="text-base font-bold text-gray-900 dark:text-white">
             {initialData ? 'Edit Lead' : 'Add New Lead'}
           </h2>
           <button
             onClick={onClose}
-            style={{ padding: '6px', borderRadius: '8px', border: 'none', background: 'transparent', cursor: 'pointer', color: '#9ca3af', display: 'flex', alignItems: 'center' }}
-            onMouseEnter={e => (e.currentTarget.style.background = '#f3f4f6')}
-            onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+            className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-slate-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
           >
             <X size={18} />
           </button>
         </div>
 
-        {/* Scrollable body — min-height:0 is REQUIRED for flex+overflow to work */}
+        {/* Scrollable Form Body */}
         <form
           id="lead-modal-form"
           onSubmit={handleSubmit}
-          style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px', overflowY: 'auto', flex: 1, minHeight: 0 }}
+          className="p-6 flex-1 overflow-y-auto space-y-4 min-h-0"
         >
 
           {/* Full Name */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5">
+            <label htmlFor="lead-modal-name" className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5">
               Full Name
             </label>
             <div className="relative">
@@ -156,8 +138,10 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
                 <User size={16} />
               </span>
               <input
+                id="lead-modal-name"
                 type="text"
                 name="name"
+                autoComplete="name"
                 value={formData.name}
                 onChange={handleChange}
                 onFocus={() => setFocusedField('name')}
@@ -177,7 +161,7 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
 
           {/* Email Address */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5">
+            <label htmlFor="lead-modal-email" className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5">
               Email Address
             </label>
             <div className="relative">
@@ -185,8 +169,10 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
                 <Mail size={16} />
               </span>
               <input
+                id="lead-modal-email"
                 type="email"
                 name="email"
+                autoComplete="email"
                 value={formData.email}
                 onChange={handleChange}
                 onFocus={() => setFocusedField('email')}
@@ -208,7 +194,7 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Phone */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5">
+              <label htmlFor="lead-modal-phone" className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5">
                 Phone Number
               </label>
               <div className="relative">
@@ -216,8 +202,10 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
                   <Phone size={16} />
                 </span>
                 <input
+                  id="lead-modal-phone"
                   type="text"
                   name="phone"
+                  autoComplete="tel"
                   value={formData.phone}
                   onChange={handleChange}
                   onFocus={() => setFocusedField('phone')}
@@ -237,7 +225,7 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
 
             {/* Company */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5">
+              <label htmlFor="lead-modal-company" className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5">
                 Company Name
               </label>
               <div className="relative">
@@ -245,8 +233,10 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
                   <Building2 size={16} />
                 </span>
                 <input
+                  id="lead-modal-company"
                   type="text"
                   name="company"
+                  autoComplete="organization"
                   value={formData.company}
                   onChange={handleChange}
                   onFocus={() => setFocusedField('company')}
@@ -269,12 +259,14 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Status */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
+              <label htmlFor="lead-modal-status" className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
                 <Tag size={12} />
                 Pipeline Status
               </label>
               <select
+                id="lead-modal-status"
                 name="status"
+                autoComplete="off"
                 value={formData.status}
                 onChange={handleChange}
                 onFocus={() => setFocusedField('status')}
@@ -291,12 +283,14 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
 
             {/* Source */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
+              <label htmlFor="lead-modal-source" className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
                 <Globe size={12} />
                 Lead Source
               </label>
               <select
+                id="lead-modal-source"
                 name="source"
+                autoComplete="off"
                 value={formData.source}
                 onChange={handleChange}
                 onFocus={() => setFocusedField('source')}
@@ -313,12 +307,14 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
 
             {/* Gender */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
+              <label htmlFor="lead-modal-gender" className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
                 <User size={12} />
                 Gender
               </label>
               <select
+                id="lead-modal-gender"
                 name="gender"
+                autoComplete="off"
                 value={formData.gender}
                 onChange={handleChange}
                 onFocus={() => setFocusedField('gender')}
@@ -333,7 +329,7 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
 
           {/* Estimated Value */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
+            <label htmlFor="lead-modal-estimated-value" className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5 flex items-center gap-1.5">
               <DollarSign size={12} />
               Estimated Deal Value ($)
             </label>
@@ -342,8 +338,10 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
                 <DollarSign size={16} />
               </span>
               <input
+                id="lead-modal-estimated-value"
                 type="number"
                 name="estimatedValue"
+                autoComplete="off"
                 value={formData.estimatedValue}
                 onChange={handleChange}
                 onFocus={() => setFocusedField('estimatedValue')}
@@ -361,7 +359,7 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
 
           {/* Notes */}
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5">
+            <label htmlFor="lead-modal-notes" className="block text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400 mb-1.5">
               Interaction Notes
             </label>
             <div className="relative">
@@ -369,7 +367,9 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
                 <FileText size={16} />
               </span>
               <textarea
+                id="lead-modal-notes"
                 name="notes"
+                autoComplete="off"
                 value={formData.notes}
                 onChange={handleChange}
                 onFocus={() => setFocusedField('notes')}
@@ -387,14 +387,12 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
 
         </form>
 
-        {/* Footer — always visible, never scrolls */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '10px', padding: '14px 24px', borderTop: '1px solid #f3f4f6', flexShrink: 0, borderRadius: '0 0 16px 16px', background: '#fff' }}>
+        {/* Footer */}
+        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 dark:border-slate-800 bg-gray-50/50 dark:bg-slate-900/50 flex-shrink-0">
           <button
             type="button"
             onClick={onClose}
-            style={{ padding: '8px 16px', fontSize: '12px', fontWeight: 600, color: '#374151', background: '#f3f4f6', border: 'none', borderRadius: '10px', cursor: 'pointer' }}
-            onMouseEnter={e => (e.currentTarget.style.background = '#e5e7eb')}
-            onMouseLeave={e => (e.currentTarget.style.background = '#f3f4f6')}
+            className="px-4 py-2 text-xs font-semibold rounded-xl bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 dark:bg-slate-900 dark:text-slate-300 dark:border-slate-800 dark:hover:bg-slate-800 transition-colors"
           >
             Cancel
           </button>
@@ -402,9 +400,7 @@ const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSubmit, initia
             form="lead-modal-form"
             type="submit"
             disabled={loading}
-            style={{ padding: '8px 20px', fontSize: '12px', fontWeight: 700, color: '#fff', background: '#ff7a59', border: 'none', borderRadius: '10px', cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1, display: 'flex', alignItems: 'center', gap: '6px', boxShadow: '0 4px 12px rgba(255,122,89,0.3)' }}
-            onMouseEnter={e => !loading && ((e.currentTarget as HTMLButtonElement).style.background = '#e5431c')}
-            onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.background = '#ff7a59')}
+            className="inline-flex items-center gap-1.5 px-5 py-2 text-xs font-bold text-white bg-[#ff7a59] hover:bg-[#e5431c] disabled:opacity-60 rounded-xl transition-all shadow-md shadow-orange-500/20"
           >
             {loading && <Loader2 size={14} className="animate-spin" />}
             <span>{loading ? 'Processing...' : initialData ? 'Update Lead' : 'Create Lead'}</span>

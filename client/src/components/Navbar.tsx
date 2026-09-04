@@ -3,6 +3,7 @@ import { Plus, Search, Bell, Clock, LogOut, Settings, Shield, ChevronDown, Menu 
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 interface NavbarProps {
   onAddLeadClick?: () => void;
@@ -12,6 +13,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ onAddLeadClick, toggleSidebar }) => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
   const [searchFocused, setSearchFocused] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -19,6 +21,17 @@ const Navbar: React.FC<NavbarProps> = ({ onAddLeadClick, toggleSidebar }) => {
 
   const notifRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
+
+  const getInitials = (name?: string) => {
+    if (!name) return 'U';
+    return name
+      .split(' ')
+      .filter(Boolean)
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
   // Close dropdowns on outside click
   useEffect(() => {
@@ -101,7 +114,10 @@ const Navbar: React.FC<NavbarProps> = ({ onAddLeadClick, toggleSidebar }) => {
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             id="navbar-search"
+            name="search"
             type="text"
+            autoComplete="off"
+            aria-label="Search CRM"
             placeholder="Search CRM or type '/'..."
             value={searchVal}
             onChange={(e) => setSearchVal(e.target.value)}
@@ -176,7 +192,7 @@ const Navbar: React.FC<NavbarProps> = ({ onAddLeadClick, toggleSidebar }) => {
             className="flex items-center gap-1.5 focus:outline-none cursor-pointer hover:opacity-95 transition-opacity"
           >
             <div className="w-7 h-7 rounded-lg bg-indigo-600 text-white font-extrabold flex items-center justify-center text-xs shadow-sm shadow-indigo-650/10 border border-white/25">
-              HM
+              {getInitials(user?.name)}
             </div>
             <ChevronDown size={12} className="text-white/70 hidden sm:block" />
           </button>
@@ -184,8 +200,8 @@ const Navbar: React.FC<NavbarProps> = ({ onAddLeadClick, toggleSidebar }) => {
           {profileOpen && (
             <div className="absolute right-0 mt-2 w-52 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xl overflow-hidden py-1.5 animate-scale-in header-dropdown">
               <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800">
-                <p className="text-xs font-bold text-slate-900 dark:text-slate-100">Himesh Mehta</p>
-                <p className="text-[9px] text-slate-450 dark:text-slate-500">himesh@example.com</p>
+                <p className="text-xs font-bold text-slate-900 dark:text-slate-100">{user?.name || 'User'}</p>
+                <p className="text-[9px] text-slate-450 dark:text-slate-500">{user?.email || 'user@example.com'}</p>
               </div>
 
               <button
@@ -209,9 +225,9 @@ const Navbar: React.FC<NavbarProps> = ({ onAddLeadClick, toggleSidebar }) => {
               <button
                 onClick={() => {
                   setProfileOpen(false);
-                  toast.success('Logged out successfully');
+                  logout();
                 }}
-                className="w-full text-left px-4 py-2 text-xs text-red-650 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 flex items-center gap-2.5 transition-colors"
+                className="w-full text-left px-4 py-2 text-xs text-red-650 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 flex items-center gap-2.5 transition-colors cursor-pointer"
               >
                 <LogOut size={13} />
                 <span>Sign Out</span>

@@ -297,7 +297,7 @@ const Dashboard: React.FC = () => {
           </div>
 
           <div className="h-56">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer minWidth={0} minHeight={0} width="100%" height="100%">
               <AreaChart data={growthData} margin={{ top: 5, right: 5, left: -25, bottom: 0 }}>
                 <defs>
                   <linearGradient id="indigoAreaGrad" x1="0" y1="0" x2="0" y2="1">
@@ -421,7 +421,7 @@ const Dashboard: React.FC = () => {
           </div>
 
           <div className="h-40 relative flex items-center justify-center">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer minWidth={0} minHeight={0} width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={pieData}
@@ -480,7 +480,7 @@ const Dashboard: React.FC = () => {
           </div>
 
           <div className="h-44">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer minWidth={0} minHeight={0} width="100%" height="100%">
               <BarChart data={performanceData} margin={{ top: 5, right: 5, left: -25, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(148, 163, 184, 0.08)" />
                 <XAxis dataKey="month" stroke="#94a3b8" fontSize={9} tickLine={false} axisLine={false} />

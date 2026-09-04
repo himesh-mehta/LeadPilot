@@ -192,6 +192,10 @@ const LeadDetails: React.FC = () => {
 
             <form onSubmit={handleNoteSubmit} className="relative">
               <textarea
+                id="lead-details-new-note"
+                name="newNote"
+                autoComplete="off"
+                aria-label="Log client communication note"
                 value={newNote}
                 onChange={(e) => setNewNote(e.target.value)}
                 onKeyDown={(e) => {
@@ -202,7 +206,7 @@ const LeadDetails: React.FC = () => {
                 }}
                 placeholder="Log outcome of discovery calls, budget negotiations, follow-ups..."
                 rows={2}
-                className="w-full px-4 py-3 pb-11 border border-gray-200 dark:border-slate-850 rounded-xl text-xs bg-transparent text-gray-800 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 resize-none"
+                className="w-full px-4 py-3 pb-11 border border-gray-200 dark:border-slate-855 rounded-xl text-xs bg-transparent text-gray-800 dark:text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 resize-none"
               />
               <div className="absolute bottom-2 right-2">
                 <button

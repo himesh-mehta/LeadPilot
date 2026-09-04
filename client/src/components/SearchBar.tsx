@@ -14,7 +14,11 @@ const SearchBar: React.FC<SearchBarProps> = ({ value, onChange, placeholder = "S
         <Search className="h-4 w-4 text-gray-400" />
       </div>
       <input
+        id="search-bar-input"
+        name="search"
         type="text"
+        autoComplete="off"
+        aria-label={placeholder}
         value={value}
         onChange={onChange}
         placeholder={placeholder}

@@ -78,7 +78,7 @@ const Login: React.FC = () => {
         <div className="backdrop-blur-xl bg-white/70 dark:bg-slate-900/60 border border-white/40 dark:border-slate-800/40 rounded-3xl p-8 shadow-2xl shadow-gray-200/50 dark:shadow-none">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-xs font-semibold text-gray-600 dark:text-slate-400 uppercase tracking-wider mb-2">
+              <label htmlFor="login-email" className="block text-xs font-semibold text-gray-600 dark:text-slate-400 uppercase tracking-wider mb-2">
                 Email Address
               </label>
               <div className="relative">
@@ -86,7 +86,10 @@ const Login: React.FC = () => {
                   <Mail size={16} />
                 </div>
                 <input
+                  id="login-email"
+                  name="email"
                   type="email"
+                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-white/50 dark:bg-slate-950/40 border border-gray-200 dark:border-slate-800 rounded-2xl text-sm placeholder-gray-400 dark:placeholder-slate-600 focus:outline-none focus:border-[#ff7a59] focus:ring-2 focus:ring-[#ff7a59]/20 transition-all text-gray-900 dark:text-white"
@@ -97,7 +100,7 @@ const Login: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-600 dark:text-slate-400 uppercase tracking-wider mb-2">
+              <label htmlFor="login-password" className="block text-xs font-semibold text-gray-600 dark:text-slate-400 uppercase tracking-wider mb-2">
                 Password
               </label>
               <div className="relative">
@@ -105,7 +108,10 @@ const Login: React.FC = () => {
                   <Lock size={16} />
                 </div>
                 <input
+                  id="login-password"
+                  name="password"
                   type="password"
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 bg-white/50 dark:bg-slate-950/40 border border-gray-200 dark:border-slate-800 rounded-2xl text-sm placeholder-gray-400 dark:placeholder-slate-600 focus:outline-none focus:border-[#ff7a59] focus:ring-2 focus:ring-[#ff7a59]/20 transition-all text-gray-900 dark:text-white"

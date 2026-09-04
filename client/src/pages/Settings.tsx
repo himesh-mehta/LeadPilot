@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Database, Loader2, Sparkles, 
   User, Bell
@@ -6,6 +6,7 @@ import {
 import toast from 'react-hot-toast';
 import { createLead, getLeads } from '../services/api';
 import { LeadStatus, Lead } from '../types';
+import { useAuth } from '../context/AuthContext';
 
 const MOCK_LEADS: Omit<Lead, 'id' | 'createdAt'>[] = [
   { name: 'Sarah Connor', email: 'sarah@resistance.net', phone: '+1 (555) 198-4202', company: 'Cyberdyne Systems', status: 'Contacted' as LeadStatus, source: 'Web', notes: 'Interested in structural security assessments and monitoring logs.', gender: 'Female' },
@@ -21,14 +22,26 @@ const MOCK_LEADS: Omit<Lead, 'id' | 'createdAt'>[] = [
 ];
 
 const Settings: React.FC = () => {
+  const { user } = useAuth();
   const [seeding, setSeeding] = useState(false);
 
-  // Profile preferences
+  // Profile preferences initialized from current user
   const [profile, setProfile] = useState({
-    name: 'Himesh Mehta',
-    email: 'himesh@example.com',
-    role: 'Super Administrator'
+    name: user?.name || 'LeadBridge User',
+    email: user?.email || 'user@example.com',
+    role: user?.role || 'Super Administrator'
   });
+
+  useEffect(() => {
+    if (user) {
+      setProfile((prev) => ({
+        ...prev,
+        name: user.name || prev.name,
+        email: user.email || prev.email,
+        role: user.role || prev.role,
+      }));
+    }
+  }, [user]);
 
   // Notification Preferences
   const [notifications, setNotifications] = useState({
@@ -94,22 +107,28 @@ const Settings: React.FC = () => {
           <form onSubmit={handleProfileSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">
+                <label htmlFor="settings-name" className="block text-xs font-semibold text-gray-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">
                   Full Name
                 </label>
                 <input
+                  id="settings-name"
+                  name="name"
                   type="text"
+                  autoComplete="name"
                   value={profile.name}
                   onChange={(e) => setProfile({ ...profile, name: e.target.value })}
                   className="w-full px-3.5 py-2 border border-gray-205 dark:border-slate-800 rounded-xl bg-transparent text-xs text-gray-855 dark:text-white focus:outline-none focus:border-indigo-500"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-gray-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">
+                <label htmlFor="settings-role" className="block text-xs font-semibold text-gray-500 dark:text-slate-400 mb-1.5 uppercase tracking-wide">
                   Role Position
                 </label>
                 <input
+                  id="settings-role"
+                  name="role"
                   type="text"
+                  autoComplete="off"
                   value={profile.role}
                   disabled
                   className="w-full px-3.5 py-2 border border-gray-150 dark:border-slate-855 rounded-xl bg-gray-50 dark:bg-slate-850 text-xs text-gray-400 focus:outline-none"
@@ -118,11 +137,14 @@ const Settings: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-555 mb-1.5 uppercase tracking-wide">
+              <label htmlFor="settings-email" className="block text-xs font-semibold text-gray-555 mb-1.5 uppercase tracking-wide">
                 Email Address
               </label>
               <input
+                id="settings-email"
+                name="email"
                 type="email"
+                autoComplete="email"
                 value={profile.email}
                 onChange={(e) => setProfile({ ...profile, email: e.target.value })}
                 className="w-full px-3.5 py-2 border border-gray-200 dark:border-slate-800 rounded-xl bg-transparent text-xs text-gray-800 dark:text-white focus:outline-none"
@@ -151,10 +173,12 @@ const Settings: React.FC = () => {
           <div className="space-y-4 divide-y divide-gray-50 dark:divide-slate-850">
             <div className="flex items-center justify-between pt-1">
               <div>
-                <p className="text-xs font-bold text-gray-800 dark:text-slate-250">New Lead Intake</p>
+                <label htmlFor="notif-lead-intake" className="text-xs font-bold text-gray-800 dark:text-slate-250 cursor-pointer">New Lead Intake</label>
                 <p className="text-[10px] text-gray-500 dark:text-slate-400">Email alerts when prospective web forms are qualified</p>
               </div>
               <input
+                id="notif-lead-intake"
+                name="leadIntake"
                 type="checkbox"
                 checked={notifications.leadIntake}
                 onChange={() => setNotifications({ ...notifications, leadIntake: !notifications.leadIntake })}
@@ -164,10 +188,12 @@ const Settings: React.FC = () => {
 
             <div className="flex items-center justify-between pt-4">
               <div>
-                <p className="text-xs font-bold text-gray-800 dark:text-slate-250">Deal Closings</p>
+                <label htmlFor="notif-deal-closings" className="text-xs font-bold text-gray-800 dark:text-slate-250 cursor-pointer">Deal Closings</label>
                 <p className="text-[10px] text-gray-500 dark:text-slate-400">Push notifications immediately on closed won conversion states</p>
               </div>
               <input
+                id="notif-deal-closings"
+                name="dealClosings"
                 type="checkbox"
                 checked={notifications.dealClosings}
                 onChange={() => setNotifications({ ...notifications, dealClosings: !notifications.dealClosings })}

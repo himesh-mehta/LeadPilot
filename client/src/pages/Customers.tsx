@@ -83,7 +83,11 @@ const Customers: React.FC = () => {
           <div className="relative w-full xl:w-80">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
             <input
+              id="customers-search"
+              name="search"
               type="text"
+              autoComplete="off"
+              aria-label="Search customers"
               placeholder="Search customers by name, company..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}

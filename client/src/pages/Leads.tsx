@@ -229,7 +229,11 @@ const Leads: React.FC = () => {
             <div className="relative w-full xl:w-72">
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={14} />
               <input
+                id="leads-search"
+                name="searchTerm"
                 type="text"
+                autoComplete="off"
+                aria-label="Search leads"
                 placeholder="Search name, email, phone, company..."
                 value={searchTerm}
                 onChange={handleSearchChange}
