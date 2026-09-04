@@ -78,7 +78,7 @@ const KPICard: React.FC<KPIValProps> = ({ title, value, growth, icon: Icon, colo
 
         {/* Sparkline chart */}
         <div className="h-8 w-24">
-          <ResponsiveContainer minWidth={0} minHeight={0} width="100%" height="100%">
+          <ResponsiveContainer initialDimension={{ width: 100, height: 100 }} minWidth={0} minHeight={0} width="100%" height="100%">
             <AreaChart data={sparkChartData} margin={{ top: 2, right: 2, left: 2, bottom: 2 }}>
               <defs>
                 <linearGradient id={`grad-${color}`} x1="0" y1="0" x2="0" y2="1">
@@ -375,7 +375,7 @@ const Stats: React.FC = () => {
                 <span className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">{totalLeads}</span>
                 <span className="text-[8px] text-gray-400 font-black uppercase tracking-widest mt-0.5">Total Leads</span>
               </div>
-              <ResponsiveContainer minWidth={0} minHeight={0} width="100%" height="100%">
+              <ResponsiveContainer initialDimension={{ width: 100, height: 100 }} minWidth={0} minHeight={0} width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={stats.statusDistribution}
@@ -431,7 +431,7 @@ const Stats: React.FC = () => {
               <span>Monthly Growth Intake (Leads Added)</span>
             </h3>
             <div className="h-64">
-              <ResponsiveContainer minWidth={0} minHeight={0} width="100%" height="100%">
+              <ResponsiveContainer initialDimension={{ width: 100, height: 100 }} minWidth={0} minHeight={0} width="100%" height="100%">
                 <AreaChart data={stats.monthlyGrowth} margin={{ top: 10, right: 15, left: -25, bottom: 0 }}>
                   <defs>
                     <linearGradient id="growthGrad" x1="0" y1="0" x2="0" y2="1">
@@ -530,7 +530,7 @@ const Stats: React.FC = () => {
               <span>Lead Conversion Trend (%)</span>
             </h3>
             <div className="h-64">
-              <ResponsiveContainer minWidth={0} minHeight={0} width="100%" height="100%">
+              <ResponsiveContainer initialDimension={{ width: 100, height: 100 }} minWidth={0} minHeight={0} width="100%" height="100%">
                 <LineChart data={stats.conversionTrend} margin={{ top: 10, right: 15, left: -25, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(156, 163, 175, 0.05)" />
                   <XAxis dataKey="month" stroke="#9ca3af" fontSize={10} tickLine={false} axisLine={false} />
@@ -576,7 +576,7 @@ const Stats: React.FC = () => {
               <span>Lead Source Distribution</span>
             </h3>
             <div className="h-64">
-              <ResponsiveContainer minWidth={0} minHeight={0} width="100%" height="100%">
+              <ResponsiveContainer initialDimension={{ width: 100, height: 100 }} minWidth={0} minHeight={0} width="100%" height="100%">
                 <BarChart
                   layout="vertical"
                   data={stats.sourceDistribution}
@@ -622,7 +622,7 @@ const Stats: React.FC = () => {
               <span>Revenue Pipeline Forecast</span>
             </h3>
             <div className="h-64">
-              <ResponsiveContainer minWidth={0} minHeight={0} width="100%" height="100%">
+              <ResponsiveContainer initialDimension={{ width: 100, height: 100 }} minWidth={0} minHeight={0} width="100%" height="100%">
                 <BarChart data={stats.revenueForecast} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(156, 163, 175, 0.05)" />
                   <XAxis dataKey="month" stroke="#9ca3af" fontSize={10} tickLine={false} axisLine={false} />
